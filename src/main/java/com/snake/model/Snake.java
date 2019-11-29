@@ -1,69 +1,35 @@
 package com.snake.model;
 
-import java.util.List;
+import java.util.LinkedList;
 
 public class Snake {
+    public LinkedList<Point> points = new LinkedList<>();
 
-    private final List<Point> points;
-    private final Point currentCoordinatesOnBoard;
-
-    public Snake(List<Point> points, Point currentCoordinatesOnBoard) {
-        this.points = points;
-        this.currentCoordinatesOnBoard = currentCoordinatesOnBoard;
+    public Snake(char symbol, int xStartingLocation, int yStartingLocation) {
+        this.points.add(new Point(xStartingLocation, yStartingLocation, symbol));
     }
 
-    public List<Point> getPoints() {
-        return points;
+    public void moveLeft(Board board, Snake snake) {
+        snake.points.getFirst().setX(snake.points.getFirst().getX() - 1);
+        board.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
+        board.ClearScreenLocation(snake.points.getFirst().getX() + 1, snake.points.getFirst().getY());
     }
 
-    public Point getCurrentCoordinatesOnBoard() {
-        return currentCoordinatesOnBoard;
+    public void moveRight(Board screen, Snake snake) {
+        snake.points.getFirst().setX(snake.points.getFirst().getX() + 1);
+        screen.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
+        screen.ClearScreenLocation(snake.points.getFirst().getX() - 1, snake.points.getFirst().getY());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Snake figure = (Snake) o;
-
-        if (!points.equals(figure.points)) return false;
-        return currentCoordinatesOnBoard.equals(figure.currentCoordinatesOnBoard);
+    public void moveUp(Board screen, Snake snake) {
+        snake.points.getFirst().setY(snake.points.getFirst().getY() - 1);
+        screen.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
+        screen.ClearScreenLocation(snake.points.getFirst().getX(), snake.points.getFirst().getY() + 1);
     }
 
-
-    @Override
-    public int hashCode() {
-        int result = points.hashCode();
-        result = 31 * result + currentCoordinatesOnBoard.hashCode();
-        return result;
+    public void moveDown(Board screen, Snake snake) {
+        snake.points.getFirst().setY(snake.points.getFirst().getY() + 1);
+        screen.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
+        screen.ClearScreenLocation(snake.points.getFirst().getX(), snake.points.getFirst().getY() - 1);
     }
-
-    @Override
-    public String toString() {
-        return "Snake{" +
-                "points=" + points +
-                ", currentCoordinatesOnBoard=" + currentCoordinatesOnBoard +
-                '}';
-    }
-
-    public static class Builder {
-        private List<Point> points;
-        private Point currentCoordinatesOnBoard;
-
-        public Builder points(List<Point> points) {
-            this.points = points;
-            return this;
-        }
-
-        public Builder currentCoordinatesOnBoard(Point currentCoordinatesOnBoard) {
-            this.currentCoordinatesOnBoard = currentCoordinatesOnBoard;
-            return this;
-        }
-
-        public Snake build() {
-            return new Snake(points, currentCoordinatesOnBoard);
-        }
-    }
-
 }
