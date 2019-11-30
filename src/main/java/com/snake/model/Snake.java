@@ -3,33 +3,58 @@ package com.snake.model;
 import java.util.LinkedList;
 
 public class Snake {
-    public LinkedList<Point> points = new LinkedList<>();
 
-    public Snake(char symbol, int xStartingLocation, int yStartingLocation) {
-        this.points.add(new Point(xStartingLocation, yStartingLocation, symbol));
+    private LinkedList<Point> body = new LinkedList<>();
+
+    public Point move(Direction direction) {
+        Point point = null;
+        int headX = this.body.getFirst().getX();
+        int headY = this.body.getFirst().getY();
+        switch (direction) {
+            case UP:
+                point = new Point(headX, headY - 1, '@');
+                break;
+            case RIGHT:
+                point = new Point(headX + 1, headY, '@');
+                break;
+            case DOWN:
+                point = new Point(headX, headY + 1, '@');
+                break;
+            case LEFT:
+                point = new Point(headX - 1, headY, '@');
+                break;
+        }
+        this.body.addFirst(point);
+        return body.removeLast();
     }
 
-    public void moveLeft(Board board, Snake snake) {
-        snake.points.getFirst().setX(snake.points.getFirst().getX() - 1);
-        board.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
-        board.ClearScreenLocation(snake.points.getFirst().getX() + 1, snake.points.getFirst().getY());
+    public boolean isEatFood(Point food) {
+        Point head = body.getFirst();
+        return Math.abs(head.getX() - food.getX()) + Math.abs(head.getY() - food.getY()) == 0;
     }
 
-    public void moveRight(Board screen, Snake snake) {
-        snake.points.getFirst().setX(snake.points.getFirst().getX() + 1);
-        screen.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
-        screen.ClearScreenLocation(snake.points.getFirst().getX() - 1, snake.points.getFirst().getY());
+    public Point getHead() {
+        return body.getFirst();
     }
 
-    public void moveUp(Board screen, Snake snake) {
-        snake.points.getFirst().setY(snake.points.getFirst().getY() - 1);
-        screen.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
-        screen.ClearScreenLocation(snake.points.getFirst().getX(), snake.points.getFirst().getY() + 1);
+    public Point addTail(Point area) {
+        this.body.addLast(area);
+        return area;
     }
 
-    public void moveDown(Board screen, Snake snake) {
-        snake.points.getFirst().setY(snake.points.getFirst().getY() + 1);
-        screen.setSnakeOnLocation(snake, snake.points.getFirst().getX(), snake.points.getFirst().getY());
-        screen.ClearScreenLocation(snake.points.getFirst().getX(), snake.points.getFirst().getY() - 1);
+    public LinkedList<Point> getBody() {
+        return body;
+    }
+
+    public enum Direction {
+        LEFT, RIGHT, UP, DOWN;
+
+        public boolean compatibleWith(Direction newDirection) {
+            if (this.equals(LEFT) || this.equals(RIGHT)) {
+                return UP.equals(newDirection) || DOWN.equals(newDirection);
+            } else {
+                return LEFT.equals(newDirection) || RIGHT.equals(newDirection);
+            }
+        }
     }
 }
