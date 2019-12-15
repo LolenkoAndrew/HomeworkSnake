@@ -1,7 +1,10 @@
 package com.snake.model;
 
+import lombok.Getter;
+
 import java.util.LinkedList;
 
+@Getter
 public class Snake {
 
     private LinkedList<Point> body = new LinkedList<>();
@@ -40,10 +43,6 @@ public class Snake {
     public Point addTail(Point area) {
         this.body.addLast(area);
         return area;
-    }
-
-    public LinkedList<Point> getBody() {
-        return body;
     }
 
     public enum Direction {

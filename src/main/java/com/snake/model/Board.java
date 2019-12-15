@@ -1,9 +1,14 @@
 package com.snake.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Random;
 
 import static com.snake.model.Snake.Direction;
 
+@Getter
+@Setter
 public class Board {
     private boolean isCovered[][];
     private final int width;
@@ -34,7 +39,7 @@ public class Board {
             if (nextRound() == true) {
                 printBoard();
             } else {
-                System.out.print("Your scores: " + getScore());
+                System.out.print("Your scores: " + this.getScores());
                 break;
             }
         }
@@ -126,31 +131,4 @@ public class Board {
 
     }
 
-    public Snake getSnake() {
-        return snake;
-    }
-
-    public Point getFood() {
-        return food;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getScore() {
-        return scores;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public Direction getSnakeDirection() {
-        return snakeDirection;
-    }
 }
